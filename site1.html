@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+    <script>
+        var curTxt = document.createElement('div');
+        curTxt.style.cursor = 'default';
+        curTxt.id = "cursorText";
+        curTxt.innerHTML = "xx,xx";
+
+        var curTxtLen = [curTxt.offsetWidth, curTxt.offsetHeight];
+        var slides = document.getElementsByClassName("slides")[0];
+        slides.appendChild(curTxt);
+
+        slides.onmousemove = function(e) 
+        {
+            const coor = getRelativeCoordinates(e, slides);
+            curTxt.innerHTML = coor.x + "," + coor.y;
+            
+            const textLeft = slides.offsetLeft + coor.x - (curTxt.offsetWidth / 2)
+            const textMaxLeft = slides.offsetLeft + slides.offsetWidth - curTxt.offsetWidth;
+            const textTop = slides.offsetTop + coor.y + 15;
+            const textMaxTop = slides.offsetTop + slides.offsetHeight - curTxt.offsetHeight;
+            
+            curTxt.style.left = Math.max(slides.offsetLeft, Math.min(textLeft, textMaxLeft)) + 'px';
+            curTxt.style.top = Math.max(slides.offsetTop, Math.min(textTop, textMaxTop)) + 'px';    
+        }
+
+        function getRelativeCoordinates(event, referenceElement) 
+        {
+            const position = {
+            x: event.pageX,
+            y: event.pageY
+            };
+            const offset = {
+            left: referenceElement.offsetLeft,
+            top: referenceElement.offsetTop
+            };
+            let reference = referenceElement.offsetParent;
+            while (reference) {
+            offset.left += reference.offsetLeft;
+            offset.top += reference.offsetTop;
+            reference = reference.offsetParent;
+            }
+            return {
+            x: position.x - offset.left,
+            y: position.y - offset.top,
+            };
+        }
+    </script>
+    <style>
+        body 
+        {
+            box-sizing: border-box;
+            border: 1px solid rgb(255, 0, 0);
+            width: 300px;
+            height: 200px;
+            margin:0;
+        }
+          
+          .dot {
+            position:absolute;
+            top:100px;
+            left:100px;
+            width: 2px;
+            height: 2px;
+            background-color: black;
+            position: absolute;
+          }
+          
+          .slides {
+            border: 1px solid black;
+            width: 200px;
+            height: 100px;
+            background:#ececec;
+          }
+          
+          #cursorText {
+            position: absolute;
+            border: 1px solid blue;
+          }
+
+    </style>
+
+
+  <title>Example Mouse Tracker</title>
+</head>
+<body>
+  <p>Mouse tracker</p>
+
+
+  <div class="slides"></div>
+  <div class="dot"><div>
+    
+
+    
+
+
+
+</body>
+</html>
+
